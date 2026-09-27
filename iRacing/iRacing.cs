@@ -1764,6 +1764,11 @@ namespace DahlDesign.Plugin.iRacing
 
                 }
 
+                if (carModel == "McLaren 720S GT3 EVO")
+                {
+                    hasTC = true;
+                }
+
                 if (Base.Settings.DashType != "Automatic Selection")
                 {
                     dashType = Base.Settings.DashType;
