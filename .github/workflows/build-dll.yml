@@ -27,31 +27,19 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            innounp050.rar
+            innounp-2.zip
             SimHub.8.01.2.zip
-          key: SimHub.8.01.2
+          key: SimHub.8.01.2-innounp-2.71.1
 
       - name: Download build requirements
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          $innounpUrls = @(
-            "https://netcologne.dl.sourceforge.net/project/innounp/innounp/innounp%200.50/innounp050.rar",
-            "https://deac-fra.dl.sourceforge.net/project/innounp/innounp/innounp%200.50/innounp050.rar"
-          )
-          foreach ($url in $innounpUrls) {
-            try {
-              Invoke-WebRequest -Uri $url -OutFile innounp050.rar
-              break
-            } catch {
-              Write-Warning "Download failed from $url"
-            }
-          }
-          if (-not (Test-Path -LiteralPath innounp050.rar)) { throw "Unable to download innounp050.rar" }
+          aria2c -j1 -o innounp-2.zip "https://raw.githubusercontent.com/jrathlev/InnoUnpacker-Windows-GUI/6fb49264aacf512a093e7b4fc6fb3dd266dad31a/innounp-2/bin/innounp-2.zip"
           aria2c -j1 -o SimHub.8.01.2.zip "https://github.com/SHWotever/SimHub/releases/download/8.1.2/SimHub.8.01.2.zip"
 
       - name: Extract build requirements
         run: |
-          7z x innounp050.rar
+          7z x innounp-2.zip
           7z x SimHub.8.01.2.zip
           New-Item -ItemType Directory -Force -Path "D:\Program Files (x86)\SimHub"
           & "$env:GITHUB_WORKSPACE\innounp.exe" -v -x -b -e '-dD:\Program Files (x86)\SimHub\' SimHubSetup_8.1.2.exe GameReaderCommon.dll SimHub.plugins.dll log4net.dll SharpDX.dll SimHub.logging.dll Microsoft.Bcl.AsyncInterfaces.dll
