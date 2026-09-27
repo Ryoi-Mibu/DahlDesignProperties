@@ -34,7 +34,7 @@ jobs:
       - name: Download build requirements
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          aria2c -j1 -o innounp050.rar "https://sourceforge.net/projects/innounp/files/innounp/innounp%200.50/innounp050.rar/download"
+          Invoke-WebRequest -Uri "https://downloads.sourceforge.net/project/innounp/innounp/innounp%200.50/innounp050.rar?download" -OutFile innounp050.rar -Headers @{"User-Agent"="Mozilla/5.0"}
           aria2c -j1 -o SimHub.8.01.2.zip "https://github.com/SHWotever/SimHub/releases/download/8.1.2/SimHub.8.01.2.zip"
 
       - name: Extract build requirements
